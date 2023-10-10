@@ -61,7 +61,7 @@ variable "sg" {
 variable "ami" {
     description = "this variable having ami value"
     type = string
-    default = "ami-057752b3f1d6c4d6c"
+    default = "ami-0c42696027a8ede58"
   }
 
 variable "instanceType" {
