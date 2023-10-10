@@ -41,9 +41,8 @@ resource "aws_iam_policy" "codepipeline_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "codepipeline_attachment" {
-  name        = "as5.2-codepipeline-attachment"
   policy_arn = aws_iam_policy.codepipeline_policy.arn
-  role = aws_iam_role.codepipeline-role.id
+  role = aws_iam_role.codepipeline_role.id
 }
 
 # IAM Role for AWS CodeBuild
@@ -88,7 +87,6 @@ resource "aws_iam_policy" "codebuild_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "codebuild_attachment" {
-  name        = "as5.2-codebuild-attachment"
   policy_arn = aws_iam_policy.codebuild_policy.arn
   role = aws_iam_role.codebuild_role.id
 }
