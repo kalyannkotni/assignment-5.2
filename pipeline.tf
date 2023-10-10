@@ -19,7 +19,7 @@ resource "aws_codebuild_project" "plan" {
  }
  source {
      type   = "CODEPIPELINE"
-     buildspec = file("buildspec/plan.yml")
+     buildspec = file("buildspec/plan.yaml")
  }
 }
 
@@ -44,7 +44,7 @@ resource "aws_codebuild_project" "apply" {
  }
  source {
      type   = "CODEPIPELINE"
-     buildspec = file("buildspec/apply.yml")
+     buildspec = file("buildspec/apply.yaml")
  }
 }
 
