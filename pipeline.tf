@@ -1,5 +1,5 @@
 resource "aws_codebuild_project" "plan" {
-  name          = "as5.2-cicd-plan"
+  name          = "as52-cicd-plan"
   description   = "Plan stage for terraform"
   service_role  = aws_iam_role.codebuild_role.arn
 
@@ -24,7 +24,7 @@ resource "aws_codebuild_project" "plan" {
 }
 
 resource "aws_codebuild_project" "apply" {
-  name          = "as5.2-cicd-apply"
+  name          = "as52-cicd-apply"
   description   = "Apply stage for terraform"
   service_role  = aws_iam_role.codepipeline_role.arn
 
