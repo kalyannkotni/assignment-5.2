@@ -1,19 +1,7 @@
-name: Deploy-vm
+name: Terraform Create Resource
 
 on:
   workflow_dispatch:
-    inputs:
-      terraform_action:
-        type: choice
-        description: select description action
-        options:
-        - apply
-        - destroy
-        required: true
-  
-  push:
-    branches:
-      - main
     
       
 jobs:
@@ -40,16 +28,9 @@ jobs:
         run: terraform plan 
 
       - name: Terraform Apply
-        if: ${{ github.event.inputs.terraform_action == 'apply' }}
         run: terraform apply -auto-approve
 
       - name: Store terraform state
         run: |
           terraform state pull > terraform.tfstate
           aws s3 cp terraform.tfstate s3://s3-terraform-statefile-as5/
-
-  terraform-destroy:
-    if: ${{ github.event.inputs.terraform_action == 'destroy' }}
-    uses: kalyannkotni/assignment-5.2/.github/workflows/terraform-destroy.yml@main
-    with:
-      username: kalyannkotni
