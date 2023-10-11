@@ -8,6 +8,7 @@ resource "aws_iam_role" "codepipeline_role" {
       {
         Action = "sts:AssumeRole",
         Effect = "Allow",
+        sid = "",
         Principal = {
           Service = "codepipeline.amazonaws.com"
         }
@@ -16,7 +17,7 @@ resource "aws_iam_role" "codepipeline_role" {
   })
 }
 
-data "aws_iam_policy_document" "tf-cicd-pipeline-policies" {
+data "aws_iam_policy_document" "codepipeline_policies" {
     statement{
         sid = ""
         actions = ["codestar-connections:UseConnection"]
@@ -31,35 +32,11 @@ data "aws_iam_policy_document" "tf-cicd-pipeline-policies" {
     }
 }
 
-resource "aws_iam_policy" "tf-cicd-pipeline-policy" {
-    name = "tf-cicd-pipeline-policy"
-    path = "/"
-    description = "Pipeline policy"
-    policy = data.aws_iam_policy_document.tf-cicd-pipeline-policies.json
-}
-
 resource "aws_iam_policy" "codepipeline_policy" {
-  name        = "as5.2-codepipeline-policy"
-  description = "IAM policy for AWS CodePipeline"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Actions = [
-          "codepipeline:*",
-          "codebuild:*",
-          "cloudwatch:*",
-          "s3:*",
-          "ec2:*",
-          "secretsmanager:*",
-          "codestar-connection:UseConnection"
-        ]
-        Effect   = "Allow"
-        Resources = "*"
-      },
-    ]
-  })
+    name = "as5.2-codepipeline-policy"
+    path = "/"
+    description = "codeipeline policy"
+    policy = data.aws_iam_policy_document.codepipeline_policies.json
 }
 
 resource "aws_iam_role_policy_attachment" "codepipeline_attachment" {
@@ -77,6 +54,7 @@ resource "aws_iam_role" "codebuild_role" {
       {
         Action = "sts:AssumeRole",
         Effect = "Allow",
+        sid = "",
         Principal = {
           Service = "codebuild.amazonaws.com"
         }
@@ -85,7 +63,7 @@ resource "aws_iam_role" "codebuild_role" {
   })
 }
 
-data "aws_iam_policy_document" "tf-cicd-build-policies" {
+data "aws_iam_policy_document" "codebuild_policies" {
     statement{
         sid = ""
         actions = ["logs:*", "s3:*", "codebuild:*", "secretsmanager:*","iam:*"]
@@ -94,40 +72,11 @@ data "aws_iam_policy_document" "tf-cicd-build-policies" {
     }
 }
 
-resource "aws_iam_policy" "tf-cicd-build-policy" {
-    name = "tf-cicd-build-policy"
+resource "aws_iam_policy" "codebuild_policy" {
+    name = "as5.2-codebuild-policy"
     path = "/"
     description = "Codebuild policy"
-    policy = data.aws_iam_policy_document.tf-cicd-build-policies.json
-}
-
-resource "aws_iam_role_policy_attachment" "tf-cicd-codebuild-attachment1" {
-    policy_arn  = aws_iam_policy.tf-cicd-build-policy.arn
-    role        = aws_iam_role.tf-codebuild-role.id
-}
-
-
-resource "aws_iam_policy" "codebuild_policy" {
-  name        = "as5.2-codebuild-policy"
-  description = "IAM policy for AWS CodeBuild"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Actions = [
-          "logs:*",
-          "s3:*",
-          "codebuild:*",
-          "iam:*",
-          "secretsmanager:*",
-          "ec2:*",
-        ]
-        Effect   = "Allow"
-        Resources = "*"
-      },
-    ]
-  })
+    policy = data.aws_iam_policy_document.codebuild_policies.json
 }
 
 resource "aws_iam_role_policy_attachment" "codebuild_attachment" {
