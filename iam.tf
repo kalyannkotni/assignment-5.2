@@ -16,6 +16,28 @@ resource "aws_iam_role" "codepipeline_role" {
   })
 }
 
+data "aws_iam_policy_document" "tf-cicd-pipeline-policies" {
+    statement{
+        sid = ""
+        actions = ["codestar-connections:UseConnection"]
+        resources = ["*"]
+        effect = "Allow"
+    }
+    statement{
+        sid = ""
+        actions = ["cloudwatch:*", "s3:*", "codebuild:*"]
+        resources = ["*"]
+        effect = "Allow"
+    }
+}
+
+resource "aws_iam_policy" "tf-cicd-pipeline-policy" {
+    name = "tf-cicd-pipeline-policy"
+    path = "/"
+    description = "Pipeline policy"
+    policy = data.aws_iam_policy_document.tf-cicd-pipeline-policies.json
+}
+
 resource "aws_iam_policy" "codepipeline_policy" {
   name        = "as5.2-codepipeline-policy"
   description = "IAM policy for AWS CodePipeline"
@@ -62,6 +84,28 @@ resource "aws_iam_role" "codebuild_role" {
     ]
   })
 }
+
+data "aws_iam_policy_document" "tf-cicd-build-policies" {
+    statement{
+        sid = ""
+        actions = ["logs:*", "s3:*", "codebuild:*", "secretsmanager:*","iam:*"]
+        resources = ["*"]
+        effect = "Allow"
+    }
+}
+
+resource "aws_iam_policy" "tf-cicd-build-policy" {
+    name = "tf-cicd-build-policy"
+    path = "/"
+    description = "Codebuild policy"
+    policy = data.aws_iam_policy_document.tf-cicd-build-policies.json
+}
+
+resource "aws_iam_role_policy_attachment" "tf-cicd-codebuild-attachment1" {
+    policy_arn  = aws_iam_policy.tf-cicd-build-policy.arn
+    role        = aws_iam_role.tf-codebuild-role.id
+}
+
 
 resource "aws_iam_policy" "codebuild_policy" {
   name        = "as5.2-codebuild-policy"
