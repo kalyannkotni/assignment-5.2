@@ -1,7 +1,12 @@
 name: Terraform destroy Resource
 
 on:
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      username:
+        description: ' a username passed from the caller workflow '
+        required: true
+        type: string
          
 jobs:
   destroy-resources:
