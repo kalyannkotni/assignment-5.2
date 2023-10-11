@@ -48,3 +48,8 @@ jobs:
           terraform state pull > terraform.tfstate
           aws s3 cp terraform.tfstate s3://s3-terraform-statefile-as5/
 
+  terraform-destroy:
+    if: ${{ github.event.inputs.terraform_action == 'destroy' }}
+    uses: kalyannkotni/assignment-5.2/.github/workflows/terraform-destroy.yml@main
+    with:
+      username: kalyannkotni
