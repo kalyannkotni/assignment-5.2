@@ -21,7 +21,7 @@ resource "aws_iam_policy" "codepipeline_policy" {
   description = "IAM policy for AWS CodePipeline"
 
   policy = jsonencode({
-    Version = "2012-10-17",
+    Version = "2012-10-17"
     Statement = [
       {
         Actions = [
@@ -32,9 +32,9 @@ resource "aws_iam_policy" "codepipeline_policy" {
           "ec2:*",
           "secretsmanager:*",
           "codestar-connection:UseConnection"
-        ],
-        Effect   = "Allow",
-        Resources = ["*"],
+        ]
+        Effect   = "Allow"
+        Resources = "*"
       },
     ]
   })
@@ -68,7 +68,7 @@ resource "aws_iam_policy" "codebuild_policy" {
   description = "IAM policy for AWS CodeBuild"
 
   policy = jsonencode({
-    Version = "2012-10-17",
+    Version = "2012-10-17"
     Statement = [
       {
         Actions = [
@@ -78,9 +78,9 @@ resource "aws_iam_policy" "codebuild_policy" {
           "iam:*",
           "secretsmanager:*",
           "ec2:*",
-        ],
-        Effect   = "Allow",
-        Resources = ["*"],
+        ]
+        Effect   = "Allow"
+        Resources = "*"
       },
     ]
   })
