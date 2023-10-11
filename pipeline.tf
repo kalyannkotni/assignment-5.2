@@ -26,7 +26,7 @@ resource "aws_codebuild_project" "plan" {
 resource "aws_codebuild_project" "apply" {
   name          = "as52-cicd-apply"
   description   = "Apply stage for terraform"
-  service_role  = aws_iam_role.codepipeline_role.arn
+  service_role  = aws_iam_role.codebuild_role.arn
 
   artifacts {
     type = "CODEPIPELINE"
@@ -49,7 +49,7 @@ resource "aws_codebuild_project" "apply" {
 }
 
 
-resource "aws_codepipeline" "cicd_pipeline" {
+resource "aws_codepipeline" "codepipeline" {
   name = "as5.2-cicd"
   role_arn = aws_iam_role.codepipeline_role.arn
 
@@ -66,7 +66,7 @@ resource "aws_codepipeline" "cicd_pipeline" {
             owner = "AWS"
             provider = "CodeStarSourceConnection"
             version = "1"
-            output_artifacts = ["as5.2-tf-code"]
+            output_artifacts = ["as52-tf-code"]
             configuration = {
                 FullRepositoryId = "kalyannkotni/assignment-5.2"
                 BranchName   = "main"
@@ -84,7 +84,7 @@ resource "aws_codepipeline" "cicd_pipeline" {
             provider = "CodeBuild"
             version = "1"
             owner = "AWS"
-            input_artifacts = ["as5.2-tf-code"]
+            input_artifacts = ["as52-tf-code"]
             configuration = {
                 ProjectName = "as5.2-tf-cicd-plan"
             }
@@ -99,7 +99,7 @@ resource "aws_codepipeline" "cicd_pipeline" {
             provider = "CodeBuild"
             version = "1"
             owner = "AWS"
-            input_artifacts = ["as5.2-tf-code"]
+            input_artifacts = ["as52-tf-code"]
             configuration = {
                 ProjectName = "as5.2-tf-cicd-apply"
             }
