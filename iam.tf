@@ -2,19 +2,22 @@
 resource "aws_iam_role" "codepipeline_role" {
   name = "as5.2-codepipeline-role"
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Action = "sts:AssumeRole",
-        Effect = "Allow",
-        sid = "",
-        Principal = {
-          Service = "codepipeline.amazonaws.com"
-        }
-      }
-    ]
-  })
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "codepipeline.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+
 }
 
 data "aws_iam_policy_document" "codepipeline_policies" {
@@ -48,19 +51,22 @@ resource "aws_iam_role_policy_attachment" "codepipeline_attachment" {
 resource "aws_iam_role" "codebuild_role" {
   name = "as5.2-codebuild-role"
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Action = "sts:AssumeRole",
-        Effect = "Allow",
-        sid = "",
-        Principal = {
-          Service = "codebuild.amazonaws.com"
-        }
-      }
-    ]
-  })
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "codebuild.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+
 }
 
 data "aws_iam_policy_document" "codebuild_policies" {
