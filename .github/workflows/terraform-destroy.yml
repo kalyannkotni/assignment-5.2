@@ -1,15 +1,10 @@
 name: Terraform destroy Resource
 
 on:
-  workflow_call:
-    inputs:
-      username:
-        description: ' a username passed from the caller workflow '
-        required: true
-        type: string
+  workflow_dispatch:
          
 jobs:
-  terraform-destroy:
+  destroy-resources:
     runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
@@ -31,4 +26,3 @@ jobs:
       - name: cleanup terraform state
         run: |
           aws s3 rm s3://s3-terraform-statefile-as5/terraform.tfstate
-
